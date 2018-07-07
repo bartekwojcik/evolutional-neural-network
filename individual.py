@@ -3,17 +3,20 @@ import random
 
 class Individual(object):
 
-    def __init__(self, chromosomes=None, random_chrom_provider=None):
+    def __init__(self, train_x, train_y, valid_x, valid_y, chromosomes=None, random_chrom_provider=None):
         if chromosomes is not None:
             self.weights = chromosomes.weights
             self.activation_function = chromosomes.act_func
-            self.neurons_first_layer = chromosomes.neurons_first_layer
-            self.number_hidden_layers = chromosomes.number_hidden_layers
+            #todo add later
+            #self.neurons_first_layer = chromosomes.neurons_first_layer
+            #todo add later
+            #self.number_hidden_layers = chromosomes.number_hidden_layers
             self.num_neur_hidden_layer = chromosomes.num_neur_hidden_layer
         else:
             self.random_chrom_provider = random_chrom_provider
             self.set_random_chromosomes()
 
+        #todo train
 
 
     def fitness_value(self):

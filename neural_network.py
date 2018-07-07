@@ -76,3 +76,27 @@ class Network:
             print("accuracy: %.2f%%" % accuracy)
 
         return accuracy
+
+    def earlystopping(self, inputs, targets, valid, validtargets, eta, max_iter = 5000, niterations=100):
+
+        valid = np.concatenate((valid, -np.ones((np.shape(valid)[0], 1))), axis=1)
+
+        old_val_error1 = 100002
+        old_val_error2 = 100001
+        new_val_error = 100000
+
+        count = 0
+        iters =0
+        while (self.__early_stopping_criteria__(old_val_error1,new_val_error,old_val_error2) or max_iter <= niterations):
+            count += 1
+            self.mlptrain(inputs, targets, eta, niterations)
+            old_val_error2 = old_val_error1
+            old_val_error1 = new_val_error
+            validout = self.mlpfwd(valid)
+            new_val_error = 0.5 * np.sum((validtargets - validout) ** 2)
+            iters += niterations
+
+        return new_val_error
+
+    def __early_stopping_criteria__(self, old_val_error1, new_val_error, old_val_error2):
+        return ((old_val_error1 - new_val_error) > 0.001) or ((old_val_error2 - old_val_error1) > 0.001)

@@ -11,7 +11,6 @@ class Null_activation(object):
         deltah = gprime * (np.dot(deltao, np.transpose(prev_weights)))
         return deltah
 
-
 class Sigmoid_activation(object):
 
     def forward(self, x):
@@ -39,6 +38,7 @@ class Cos_activation(object):
     def deltah(self,hidden,deltao,prev_weights):
         deltah = - np.sin(hidden) * (np.dot(deltao, np.transpose(prev_weights)))
         return deltah
+
 class Exp_activation(object):
     def forward(self, x):
         hidden = np.exp((- np.square(x))/2)
