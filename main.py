@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 from individual import Individual
 from population import Population
 
+
+def simple_plot(x, y, label):
+    plt.scatter(x, y, s=1,
+                label=label)
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+               ncol=2, mode="expand", borderaxespad=0.)
+
 #todo preprocess data!!! use scalers, shuffle etc
 def main():
 
@@ -13,7 +20,7 @@ def main():
     maxgen = 500
     ind_list = []
     for i in range(popsize):
-        ind = Individual(weird_function, allels_num, st)
+        ind = Individual()
         ind_list.append(ind)
 
     initial_values = list(map(lambda ind: ind.fitness_value(), ind_list))
@@ -29,7 +36,7 @@ def main():
         dens = population.get_pop_fitness_density()
         mating_pool = population.get_mating_pool(dens)
         random.shuffle(mating_pool)
-        ind_list = population.breed_population(mating_pool, allels_num, weird_function)
+        ind_list = population.breed_mating_pool(mating_pool, allels_num, weird_function)
         pop_list.append(population)
 
     last_decodings = list(map(lambda ind: ind.decode_individual(), ind_list))
@@ -53,12 +60,6 @@ def main():
         worst_of_current_population[idx] = min(fitness_list)
         if best > best_so_far:
             best_so_far = best
-
-    def simple_plot(x, y, label):
-        plt.scatter(x, y, s=1,
-                    label=label)
-        plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-                   ncol=2, mode="expand", borderaxespad=0.)
 
     # plot best of current population
     plt.subplot(211)

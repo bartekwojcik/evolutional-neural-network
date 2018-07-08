@@ -5,7 +5,7 @@ import math
 class Network:
     """ A Multi-Layer Perceptron"""
 
-    def __init__(self, inputs, targets, nhidden, activation_function_provider, momentum=0.9):
+    def __init__(self, inputs, targets, weights, nhidden, activation_function_provider, momentum=0.9):
         """ Constructor """
         # Set up network size
         self.nin = np.shape(inputs)[1]
@@ -17,11 +17,13 @@ class Network:
         self.activation_function_provider = activation_function_provider
 
         # Initialise network
-        self.weights1 = (np.random.rand(self.nin + 1, self.nhidden) - 0.5) * 2 / np.sqrt(self.nin)
-        self.weights2 = (np.random.rand(self.nhidden + 1, self.nout) - 0.5) * 2 / np.sqrt(self.nhidden)
+        self.weights1 = weights[0]
+        self.weights2 = weights[1]
+        #self.weights1 = (np.random.rand(self.nin + 1, self.nhidden) - 0.5) * 2 / np.sqrt(self.nin)
+        #self.weights2 = (np.random.rand(self.nhidden + 1, self.nout) - 0.5) * 2 / np.sqrt(self.nhidden)
 
-    def mlptrain(self, inputs, targets, eta, niterations):
-        """ Train the thing """
+    def train(self, inputs, targets, eta, niterations):
+        """ Train """
         # Add the inputs that match the bias node
         inputs = np.concatenate((inputs, -np.ones((self.ndata, 1))), axis=1)
 
@@ -29,7 +31,7 @@ class Network:
         updatew2 = np.zeros((np.shape(self.weights2)))
 
         for n in range(niterations):
-            self.outputs = self.mlpfwd(inputs)
+            self.outputs = self.forward(inputs)
             error = 0.5 * np.sum((self.outputs - targets) ** 2)
             deltao = (self.outputs - targets) / self.ndata
 
@@ -40,7 +42,7 @@ class Network:
             self.weights1 -= updatew1
             self.weights2 -= updatew2
 
-    def mlpfwd(self, inputs):
+    def forward(self, inputs):
         """ Run the network forward """
 
         self.hidden = np.dot(inputs, self.weights1)
@@ -55,7 +57,7 @@ class Network:
 
         # Add the inputs that match the bias node
         inputs = np.concatenate((inputs, -np.ones((np.shape(inputs)[0], 1))), axis=1)
-        outputs = self.mlpfwd(inputs)
+        outputs = self.forward(inputs)
 
         temp_outputs = outputs
         nrows = np.shape(targets)[0]
@@ -89,10 +91,10 @@ class Network:
         iters =0
         while (self.__early_stopping_criteria__(old_val_error1,new_val_error,old_val_error2) or max_iter <= niterations):
             count += 1
-            self.mlptrain(inputs, targets, eta, niterations)
+            self.train(inputs, targets, eta, niterations)
             old_val_error2 = old_val_error1
             old_val_error1 = new_val_error
-            validout = self.mlpfwd(valid)
+            validout = self.forward(valid)
             new_val_error = 0.5 * np.sum((validtargets - validout) ** 2)
             iters += niterations
 
