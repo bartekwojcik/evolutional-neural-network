@@ -45,9 +45,14 @@ class Population_processor(object):
         return Population(pop, popsize)
 
     def start_evolution(self):
-
+        """
+        Temporarly return list of all populations
+        :return:
+        """
         generation = self.create_initial_population(self.popsize)
-
+        pop_list= []
         for i in range(self.max_gen):
             new_generation = generation.breed_new_population(self.retain_percentage)
+            pop_list.append(new_generation)
+        return pop_list
 
