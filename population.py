@@ -57,11 +57,11 @@ class Population(object):
         best_ordered = [key_value_pair[1] for key_value_pair in sorted(fitness_dict, key=lambda x: x[0], reverse=True)]
         # Get the number we want to keep for the next gen.
         retain_length = int(len(best_ordered) * retain_percentage)
-        parents = best_ordered[retain_length]
+        parents = best_ordered[:retain_length]
 
         # Now find out how many spots we have left to fill.
         parents_length = len(parents)
-        desired_length = len(self.popsize) - parents_length
+        desired_length = self.popsize - parents_length
         density = self.get_pop_fitness_density()
         mating_pool = self.get_mating_pool(density,desired_length)
         #right now parents and mating pool may overlap, if you implement diffrent mating pool function (the better one) you dont need retain and parents

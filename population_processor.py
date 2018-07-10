@@ -38,7 +38,7 @@ class Population_processor(object):
         for _ in range(0, popsize):
             # Create a random network.
             # todo init paramters
-            ind = Individual(self.test_x, self.test_y, self.chromosomes_provider)
+            ind = Individual(self.test_x, self.test_y,random_chrom_provider= self.chromosomes_provider)
             # Add the network to our population.
             pop.append(ind)
 

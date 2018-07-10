@@ -3,8 +3,8 @@ import numpy as np
 #https://theclevermachine.wordpress.com/2014/09/06/derivation-error-backpropagation-gradient-descent-for-neural-networks/
 class Null_activation(object):
 
-    def forward(self):
-        return 0
+    def forward(self,x):
+        return np.zeros_like(x)
 
     def deltah(self,hidden,deltao,prev_weights):
         gprime = 0

@@ -24,7 +24,7 @@ class Individual(object):
             raise ValueError("chromosomes and provider are both null")
         else:
             self.random_chrom_provider = random_chrom_provider
-            self.set_random_chromosomes(test_y, test_x)
+            self.set_random_chromosomes(test_x, test_y)
 
         self.net = Network(test_x, test_y, self.weights, self.num_neur_hidden_layer, self.activation_function)
         self.accuracy = self.net.accuracy(test_x, test_y, 0.01, False)
@@ -40,6 +40,7 @@ class Individual(object):
         nin = np.shape(x)[1]
         nout = np.shape(y)[1]
         self.activation_function = self.random_chrom_provider.get_random_activation_function()
+        self.num_neur_hidden_layer = 5
         # todo this is not truly random, get with something better
         weights1 = (np.random.rand(nin + 1, self.num_neur_hidden_layer) - 0.5) * 2 / np.sqrt(nin)
         weights2 = (np.random.rand(self.num_neur_hidden_layer + 1, nout) - 0.5) * 2 / np.sqrt(
