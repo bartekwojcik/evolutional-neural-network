@@ -85,26 +85,7 @@ class Population(object):
         #todo for tests, just return mother and father
         return mother, father
 
-        #todo now it is comment
-        # point = 6#random.randint(1, allels_num - 1)
-        # all_one = one.chromosome
-        # all_two = two.chromosome
-        #
-        # half_one = all_one[:point]
-        # one_half = all_one[point:]
-        #
-        # half_two = all_two[:point]
-        # two_hald = all_two[point:]
-        #
-        # off_one = half_one + two_hald
-        # off_two = one_half + half_two
-        #
-        # ind_one = Individual(eval_func, allels_num, self.st, off_one)
-        # ind_two = Individual(eval_func, allels_num, self.st, off_two)
-        #
-        # ind_one.mutate()
-        # ind_two.mutate()
-        # return ind_one, ind_two
+
 
     def get_mating_pool(self, dens, lenght):
         """Return mating pool of given density using Roulette wheel selection
@@ -126,8 +107,7 @@ class Population(object):
     def average(self):
         """ Finds average fitness for this population
 
-        :return:
-                (float): average fitness of population
+        :return:(float): average fitness of population
         """
         fitness_list = [ind.fitness_value() for ind in self.individuals]
         average_of_current_population = sum(fitness_list) / float(len(fitness_list))
@@ -141,6 +121,10 @@ class Population(object):
         best = max(self.individuals, key=lambda ind:ind.fitness_value())
         return best
     def worst(self):
+        """Finds worst of population
+
+        :return: (Individual): Individual with best fitness
+        """
         worst = min(self.individuals, key=lambda ind:ind.fitness_value())
         return worst
 
