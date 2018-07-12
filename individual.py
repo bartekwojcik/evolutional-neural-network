@@ -33,6 +33,8 @@ class Individual(object):
         return self.accuracy
 
     def relative_fitness(self, pop_fitness):
+        if(pop_fitness == 0):
+            return 0
         result = self.fitness_value() / pop_fitness
         return result
 

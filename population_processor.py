@@ -54,5 +54,6 @@ class Population_processor(object):
         for i in range(self.max_gen):
             new_generation = generation.breed_new_population(self.retain_percentage)
             pop_list.append(new_generation)
-        return pop_list
+            generation = new_generation
+            yield i, generation
 

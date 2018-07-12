@@ -21,7 +21,7 @@ class Population(object):
         """
         pop_fitness = self.whole_pop_fitness()
         d = list((i.relative_fitness(pop_fitness), i) for i in self.individuals)
-        fit_list = d
+        fit_list = sorted(d,key=lambda x: x[0])
 
         density = self.add_rec(fit_list[1:], [(fit_list[0])])
         return density
@@ -118,7 +118,7 @@ class Population(object):
         mating_pool = []
         for i in range(lenght):
             rand = random.random()
-            selected = next(x for x in dens if x[0] > rand)[1]
+            selected = next((x for x in dens if x[0] > rand),dens[-1])[1]
             mating_pool.append(selected)
 
         return mating_pool
@@ -140,6 +140,9 @@ class Population(object):
         """
         best = max(self.individuals, key=lambda ind:ind.fitness_value())
         return best
+    def worst(self):
+        worst = min(self.individuals, key=lambda ind:ind.fitness_value())
+        return worst
 
     def add_rec(self,list, tail_list):
         if list:
