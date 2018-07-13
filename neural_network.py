@@ -17,8 +17,9 @@ class Network:
         self.activation_function_provider = activation_function_provider
 
         # Initialise network
-        self.weights1 = weights[0]
-        self.weights2 = weights[1]
+        self.weights = weights
+        # self.weights1 = weights[0]
+        # self.weights2 = weights[1]
         #self.weights1 = (np.random.rand(self.nin + 1, self.nhidden) - 0.5) * 2 / np.sqrt(self.nin)
         #self.weights2 = (np.random.rand(self.nhidden + 1, self.nout) - 0.5) * 2 / np.sqrt(self.nhidden)
 
@@ -27,29 +28,29 @@ class Network:
         # Add the inputs that match the bias node
         inputs = np.concatenate((inputs, -np.ones((self.ndata, 1))), axis=1)
 
-        updatew1 = np.zeros((np.shape(self.weights1)))
-        updatew2 = np.zeros((np.shape(self.weights2)))
+        updatew1 = np.zeros((np.shape(self.weights[0])))
+        updatew2 = np.zeros((np.shape(self.weights[1])))
 
         for n in range(niterations):
             self.outputs = self.forward(inputs)
             error = 0.5 * np.sum((self.outputs - targets) ** 2)
             deltao = (self.outputs - targets) / self.ndata
 
-            deltah = self.activation_function_provider.deltah(self.hidden,deltao,self.weights2)
+            deltah = self.activation_function_provider.deltah(self.hidden,deltao,self.weights[1])
 
             updatew1 = eta * (np.dot(np.transpose(inputs), deltah[:, :-1])) + self.momentum * updatew1
             updatew2 = eta * (np.dot(np.transpose(self.hidden), deltao)) + self.momentum * updatew2
-            self.weights1 -= updatew1
-            self.weights2 -= updatew2
+            self.weights[0] -= updatew1
+            self.weights[1] -= updatew2
 
     def forward(self, inputs):
         """ Run the network forward """
 
-        self.hidden = np.dot(inputs, self.weights1)
+        self.hidden = np.dot(inputs, self.weights[0])
         self.hidden = self.activation_function_provider.forward(self.hidden)
         self.hidden = np.concatenate((self.hidden, -np.ones((np.shape(inputs)[0], 1))), axis=1)
 
-        outputs = np.dot(self.hidden, self.weights2)
+        outputs = np.dot(self.hidden, self.weights[1])
         return outputs
 
     def accuracy(self, inputs, targets, epsilon, verbose=True):

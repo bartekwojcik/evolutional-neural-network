@@ -4,7 +4,10 @@ import random
 
 
 class Population_processor(object):
-    def __init__(self, test_x, test_y, popsize,max_gen, chromosomes_provider, retain_percentage=0.1, mutate_chance=0.02):
+    def __init__(self, test_x, test_y,
+                 popsize,max_gen, chromosomes_provider,
+                 retain_percentage=0.1, mutate_chance=0.02,
+                 alpha_blend=0.5, SBX_n = 5):
         """Create an optimizer.
 
         Args:
@@ -17,6 +20,8 @@ class Population_processor(object):
             mutate_chance (float): Probability a network chromosome will be randomly mutated
 
         """
+        self.SBX_n = SBX_n
+        self.alpha_blend = alpha_blend
         self.max_gen = max_gen
         self.popsize = popsize
         self.test_x = test_x
@@ -25,7 +30,7 @@ class Population_processor(object):
         self.retain_percentage = retain_percentage
         self.chromosomes_provider = chromosomes_provider
 
-    def create_initial_population(self, popsize):
+    def create_initial_population(self, popsize, mutations_params):
         """Create a population of random networks.
 
         Args:
@@ -42,14 +47,22 @@ class Population_processor(object):
             # Add the network to our population.
             pop.append(ind)
 
-        return Population(pop, popsize)
+        return Population(pop, popsize,mutations_params)
 
     def start_evolution(self):
         """
         Temporarly return list of all populations
         :return:
         """
-        generation = self.create_initial_population(self.popsize)
+
+        mutations_params = {}
+        mutations_params.alpha_blend = self.alpha_blend
+        mutations_params.test_x = self.test_x
+        mutations_params.test_y = self.test_y
+        mutations_params.SBX_n = self.SBX_n
+
+
+        generation = self.create_initial_population(self.popsize,mutations_params)
         pop_list= []
         for i in range(self.max_gen):
             new_generation = generation.breed_new_population(self.retain_percentage)

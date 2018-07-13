@@ -1,11 +1,13 @@
 from collections import OrderedDict
 from individual import Individual
+from mutators import *
 import random
 
 
 class Population(object):
 
-    def __init__(self, individuals, popsize):
+    def __init__(self, individuals, popsize, mutations_params):
+        self.mutations_params = mutations_params
         self.individuals = individuals
         self.popsize = popsize
 
@@ -34,11 +36,12 @@ class Population(object):
 
         :return: (list[Individuals]): list of offsprings
         """
+        random.shuffle(mating_pool)
         offspring_list = []
         for i in range(0, len(mating_pool), 2):
             one = mating_pool[i]
             two = mating_pool[i + 1]
-            off_one, off_two = self.crossover(one, two)
+            off_one, off_two = self.crossover(one, two,self.mutations_params)
 
             offspring_list.append(off_one)
             offspring_list.append(off_two)
@@ -69,9 +72,9 @@ class Population(object):
 
         children = self.breed_mating_pool(mating_pool)
 
-        return Population(children,self.popsize)
+        return Population(children,self.popsize, self.mutations_params)
 
-    def crossover(self, mother, father):
+    def crossover(self, mother, father, mutations_params):
         """Make two children as parts of their parents.
 
         Args:
@@ -83,8 +86,44 @@ class Population(object):
 
         """
         #todo for tests, just return mother and father
-        return mother, father
+        y1_d = {}
+        y2_d = {}
+        nnhl1 = mother.net.num_neur_hidden_layer
+        nnhl2 = father.net.num_neur_hidden_layer
 
+        #blend crossover over parents number of hidden layer neurons
+        o1,o2 = blend_crossover(nnhl1,nnhl2,mutations_params.alpha_blend)
+        y1_d.num_neur_hidden_layer = o1
+        y2_d.num_neur_hidden_layer = o2
+
+        # select activation functions from parents to offspring
+        af1,af2 = select_activation_functions(mother.net.activation_function, father.activation.function)
+        y1_d.act_func = af1
+        y2_d.act_function = af2
+
+        n = mutations_params.SBX_n
+
+        #crossing over weights (todo still assuming weights len is the same)
+        num_of_weights = mother.net.weights
+        y1_d.weights = []
+        y2_d.weights = []
+
+        for w in range (num_of_weights):
+            p1_weight = mother.net.weights[w]
+            p2_weight = father.net.weights[w]
+            o1,o2 = simulated_binary_crossover(p1_weight,p2_weight,n)
+            y1_d.weights.append(o1)
+            y2_d.weights.append(o2)
+
+
+        y1 = Individual(mutations_params.test_x,
+                        mutations_params.test_y,
+                        y1_d)
+        y2 = Individual(mutations_params.test_x,
+                        mutations_params.test_y,
+                        y2_d)
+
+        return y1, y2
 
 
     def get_mating_pool(self, dens, lenght):
