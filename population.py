@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from individual import Individual
 from mutators import *
+from utils import My_Dict
 import random
 
 
@@ -86,31 +87,35 @@ class Population(object):
 
         """
         #todo for tests, just return mother and father
-        y1_d = {}
-        y2_d = {}
-        nnhl1 = mother.net.num_neur_hidden_layer
-        nnhl2 = father.net.num_neur_hidden_layer
+        y1_d = My_Dict()
+        y2_d = My_Dict()
 
-        #blend crossover over parents number of hidden layer neurons
-        o1,o2 = blend_crossover(nnhl1,nnhl2,mutations_params.alpha_blend)
-        y1_d.num_neur_hidden_layer = o1
-        y2_d.num_neur_hidden_layer = o2
+        #todo this is part of topology as well
+        # #blend crossover over parents number of hidden layer neurons
+        # nnhl1 = mother.num_neur_hidden_layer
+        # nnhl2 = father.num_neur_hidden_layer
+        # o1,o2 = blend_crossover(nnhl1,nnhl2,mutations_params.alpha_blend)
+        # y1_d.num_neur_hidden_layer = o1
+        # y2_d.num_neur_hidden_layer = o2
+
+        y1_d.num_neur_hidden_layer = 5
+        y2_d.num_neur_hidden_layer = 5
 
         # select activation functions from parents to offspring
-        af1,af2 = select_activation_functions(mother.net.activation_function, father.activation.function)
+        af1,af2 = select_activation_functions(mother.activation_function, father.activation_function)
         y1_d.act_func = af1
-        y2_d.act_function = af2
+        y2_d.act_func = af2
 
         n = mutations_params.SBX_n
 
         #crossing over weights (todo still assuming weights len is the same)
-        num_of_weights = mother.net.weights
+        num_of_weights = len(mother.weights)
         y1_d.weights = []
         y2_d.weights = []
 
-        for w in range (num_of_weights):
-            p1_weight = mother.net.weights[w]
-            p2_weight = father.net.weights[w]
+        for w in range(num_of_weights):
+            p1_weight = mother.weights[w]
+            p2_weight = father.weights[w]
             o1,o2 = simulated_binary_crossover(p1_weight,p2_weight,n)
             y1_d.weights.append(o1)
             y2_d.weights.append(o2)
@@ -118,10 +123,10 @@ class Population(object):
 
         y1 = Individual(mutations_params.test_x,
                         mutations_params.test_y,
-                        y1_d)
+                        chromosomes=y1_d)
         y2 = Individual(mutations_params.test_x,
                         mutations_params.test_y,
-                        y2_d)
+                        chromosomes=y2_d)
 
         return y1, y2
 

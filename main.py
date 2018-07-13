@@ -14,8 +14,8 @@ def simple_plot(x, y, label):
 #todo preprocess data!!! use scalers, shuffle etc
 def main():
 
-    popsize = 10
-    maxgen = int(10)
+    popsize = 100
+    maxgen = int(100)
     chrom_provider = Chromosomes_providers()
 
     train_x, train_y = file_helper.get_OR_data()
@@ -49,6 +49,8 @@ def main():
                 label="worst of current population")
     plt.ioff()
     plt.show()
+    aaaa = bests.values()
+    print(*aaaa)
 
 
 if __name__ == "__main__": main()

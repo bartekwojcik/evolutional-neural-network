@@ -52,7 +52,7 @@ def simulated_binary_crossover(p1,p2,n):
     if size1 != size2:
         raise ValueError("oops, sizes are not the same")
 
-    u = np.random.rand(size1)
+    u = np.random.rand(size1[0],size1[1])
     beta = np.where(u<=0.5,(2*u)**(n+1), (2*(1-u))**(-1/(n+1)))
     c1 = 0.5*(p1+p2)+0.5*beta*(p1-p2)
     c2 = 0.5*(p2+p1)+0.5*beta*(p2-p1)

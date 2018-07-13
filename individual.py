@@ -12,6 +12,9 @@ class Individual(object):
         :param chromosomes: dictionary of network's parameters, can be null if you supply :random_chrom_provider
         :param random_chrom_provider: provides random chromosomes values
         """
+        if random_chrom_provider is None and chromosomes is None:
+            raise ValueError("chromosomes and provider are both null")
+
         if chromosomes is not None:
             self.weights = chromosomes.weights
             self.activation_function = chromosomes.act_func
@@ -20,8 +23,6 @@ class Individual(object):
             # todo add later
             # self.number_hidden_layers = chromosomes.number_hidden_layers
             self.num_neur_hidden_layer = chromosomes.num_neur_hidden_layer
-        if random_chrom_provider is None and chromosomes is None:
-            raise ValueError("chromosomes and provider are both null")
         else:
             self.random_chrom_provider = random_chrom_provider
             self.set_random_chromosomes(test_x, test_y)
@@ -42,7 +43,9 @@ class Individual(object):
         nin = np.shape(x)[1]
         nout = np.shape(y)[1]
         self.activation_function = self.random_chrom_provider.get_random_activation_function()
-        self.num_neur_hidden_layer = random.randint(1,10)
+        #todo this is part of topology as well, change it when you will be changing layers as well
+        # self.num_neur_hidden_layer = random.randint(1,10)
+        self.num_neur_hidden_layer = 5
         # todo this is not truly random, get with something better
         weights1 = (np.random.rand(nin + 1, self.num_neur_hidden_layer) - 0.5) * 2 / np.sqrt(nin)
         weights2 = (np.random.rand(self.num_neur_hidden_layer + 1, nout) - 0.5) * 2 / np.sqrt(

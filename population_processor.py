@@ -1,5 +1,6 @@
 from individual import Individual
 from population import Population
+from utils import My_Dict
 import random
 
 
@@ -55,7 +56,7 @@ class Population_processor(object):
         :return:
         """
 
-        mutations_params = {}
+        mutations_params = My_Dict()
         mutations_params.alpha_blend = self.alpha_blend
         mutations_params.test_x = self.test_x
         mutations_params.test_y = self.test_y
