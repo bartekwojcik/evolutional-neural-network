@@ -77,7 +77,7 @@ class Individual(object):
             new_weights.append(n_w)
         test_net = Network(self.x, self.y, new_weights, self.num_neur_hidden_layer, self.activation_function)
         #Nonuniform Mutation
-        test_acc = test_net.accuracy(self.x, self.y, 0.05, False)
+        test_acc = test_net.accuracy(self.x, self.y, 0.05, True)
         if test_acc >= self.accuracy:
             self.weights = new_weights
         else:

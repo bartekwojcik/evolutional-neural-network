@@ -20,7 +20,7 @@ def main():
     maxgen = int(3000)
     chrom_provider = Chromosomes_providers()
 
-    train_x, train_y = file_helper.get_Cubic_data()
+    train_x, train_y = file_helper.get_complex_data()
     pop_processor = Population_processor(train_x,train_y,popsize,maxgen,chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
     worsts = {}
