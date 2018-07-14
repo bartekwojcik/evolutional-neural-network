@@ -120,14 +120,17 @@ class Population(object):
             y1_d.weights.append(o1)
             y2_d.weights.append(o2)
 
-
         y1 = Individual(mutations_params.test_x,
                         mutations_params.test_y,
-                        chromosomes=y1_d)
+                        chromosomes=y1_d,
+                        random_chrom_provider=mother.random_chrom_provider)
         y2 = Individual(mutations_params.test_x,
                         mutations_params.test_y,
-                        chromosomes=y2_d)
-
+                        chromosomes=y2_d,
+                        random_chrom_provider=mother.random_chrom_provider)
+        temp = mutations_params.nonuni_mut_temp
+        y1.mutate(mutations_params.mutate_chance,temp)
+        y2.mutate(mutations_params.mutate_chance,temp)
         return y1, y2
 
 

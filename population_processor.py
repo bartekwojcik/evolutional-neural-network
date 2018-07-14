@@ -7,8 +7,8 @@ import random
 class Population_processor(object):
     def __init__(self, test_x, test_y,
                  popsize,max_gen, chromosomes_provider,
-                 retain_percentage=0.1, mutate_chance=0.02,
-                 alpha_blend=0.5, SBX_n = 5):
+                 retain_percentage=0.2, mutate_chance=0.02,
+                 alpha_blend=0.5, SBX_n = 2,nonuni_mut_temp= 0.7):
         """Create an optimizer.
 
         Args:
@@ -21,6 +21,7 @@ class Population_processor(object):
             mutate_chance (float): Probability a network chromosome will be randomly mutated
 
         """
+        self.nonuni_mut_temp = nonuni_mut_temp
         self.SBX_n = SBX_n
         self.alpha_blend = alpha_blend
         self.max_gen = max_gen
@@ -61,13 +62,13 @@ class Population_processor(object):
         mutations_params.test_x = self.test_x
         mutations_params.test_y = self.test_y
         mutations_params.SBX_n = self.SBX_n
+        mutations_params.mutate_chance = self.mutate_chance
+        mutations_params.nonuni_mut_temp = self.nonuni_mut_temp
 
 
         generation = self.create_initial_population(self.popsize,mutations_params)
-        pop_list= []
         for i in range(self.max_gen):
             new_generation = generation.breed_new_population(self.retain_percentage)
-            pop_list.append(new_generation)
             generation = new_generation
-            yield i, generation
+            yield i, new_generation
 

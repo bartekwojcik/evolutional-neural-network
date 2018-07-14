@@ -14,6 +14,7 @@ class Null_activation(object):
 class Sigmoid_activation(object):
 
     def forward(self, x):
+        x -= np.max(x)
         hidden = 1.0 / (1.0 + np.exp(- x))
         return hidden
 

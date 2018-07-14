@@ -3,6 +3,7 @@ from population_processor import Population_processor
 import matplotlib.pyplot as plt
 from chromosoms_provider import Chromosomes_providers
 import file_helper
+import gc
 
 def simple_plot(x, y, label):
     plt.scatter(x, y, s=1,
@@ -14,16 +15,18 @@ def simple_plot(x, y, label):
 #todo preprocess data!!! use scalers, shuffle etc
 def main():
 
+    #popsize must be even
     popsize = 100
-    maxgen = int(100)
+    maxgen = int(3000)
     chrom_provider = Chromosomes_providers()
 
-    train_x, train_y = file_helper.get_OR_data()
+    train_x, train_y = file_helper.get_Cubic_data()
     pop_processor = Population_processor(train_x,train_y,popsize,maxgen,chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
     worsts = {}
     bests = {}
     averages = {}
+
     for idx,population in generator:
         average = population.average()
         best = population.best().fitness_value()
@@ -31,6 +34,8 @@ def main():
         worsts[idx] = float(worst)
         bests[idx] = best
         averages[idx] = average
+        del population
+        debug =5
 
     # plot best of current population
     plt.subplot(211)
