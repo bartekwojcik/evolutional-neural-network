@@ -1,9 +1,9 @@
 import numpy as np
-from population_processor import Population_processor
+from src.math_functions import *
+from src.Gas import file_helper
+from src.Gas.population_processor import Population_processor
 import matplotlib.pyplot as plt
-from chromosoms_provider import Chromosomes_providers
-import file_helper
-import gc
+from src.Gas.chromosoms_provider import Chromosomes_providers
 
 def simple_plot(x, y, label):
     plt.scatter(x, y, s=1,
@@ -19,9 +19,8 @@ def main():
     popsize = 100
     maxgen = int(3000)
     chrom_provider = Chromosomes_providers()
-
-    train_x, train_y = file_helper.get_complex_data()
-    pop_processor = Population_processor(train_x,train_y,popsize,maxgen,chromosomes_provider=chrom_provider)
+    chrom_provider.function_wrapper = MatyasFunctionProvider()
+    pop_processor = Population_processor(popsize,maxgen,chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
     worsts = {}
     bests = {}
@@ -35,7 +34,6 @@ def main():
         bests[idx] = best
         averages[idx] = average
         del population
-        debug =5
 
     # plot best of current population
     plt.subplot(211)

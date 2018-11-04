@@ -18,20 +18,6 @@ def blend_crossover(x1,x2,alpha):
 
     return y1,y2
 
-def select_activation_functions(af1,af2):
-    """
-    Selects activation_function from the given ones
-
-    :param af1:
-    :param af2:
-    :return:
-    two activations functions
-    """
-
-    y1 = af1 if random.random() < 0.5 else af2
-    y2 = af2 if random.random() < 0.5 else af1
-
-    return y1,y2
 
 def simulated_binary_crossover(p1,p2,n):
     """
@@ -44,7 +30,6 @@ def simulated_binary_crossover(p1,p2,n):
     """
 
     #todo now i assume that p1 and p2 has the same size, what if they are diffrent?
-    #todo read paper in heriot watt folder
 
     size1 = p1.shape
     size2 = p2.shape
