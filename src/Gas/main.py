@@ -17,7 +17,7 @@ def main():
 
     #popsize must be even
     popsize = 100
-    maxgen = int(3000)
+    maxgen = int(1000)
     chrom_provider = Chromosomes_providers()
     chrom_provider.function_wrapper = MatyasFunctionProvider()
     pop_processor = Population_processor(popsize,maxgen,chromosomes_provider=chrom_provider)
@@ -50,7 +50,7 @@ def main():
     plt.subplot(211)
     simple_plot(worsts.keys(), worsts.values(),
                 label="worst of current population")
-    plt.ioff()
+    #plt.ioff()
     plt.show()
     aaaa = bests.values()
     print(*aaaa)

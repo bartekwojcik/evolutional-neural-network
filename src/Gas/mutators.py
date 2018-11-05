@@ -44,6 +44,15 @@ def simulated_binary_crossover(p1,p2,n):
 
     return c1,c2
 
+def normal_mutation(x,sigma = 0.1):
+    """
+    Performs normal mutation z = x + sigma * N(0,1)
+    :param x:
+    :param sigma:
+    """
+    z = x + sigma * random.random()
+    return z
+
 
 
 

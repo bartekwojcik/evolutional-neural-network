@@ -88,12 +88,17 @@ class Population(object):
         y1_d = My_Dict()
         y2_d = My_Dict()
 
-        # for w in range(num_of_weights):
-        #     p1_weight = mother.weights[w]
-        #     p2_weight = father.weights[w]
-        #     o1,o2 = simulated_binary_crossover(p1_weight,p2_weight,n)
-        #     y1_d.weights.append(o1)
-        #     y2_d.weights.append(o2)
+        y1_d.range_array = mother.range_array
+        y2_d.range_array = father.range_array
+
+        x1,x2 = blend_crossover(mother.x,father.x,mutations_params.alpha_blend)
+        y1,y2 = blend_crossover(mother.y,father.y,mutations_params.alpha_blend)
+
+        y1_d.x = x1
+        y1_d.y = y1
+
+        y2_d.x = x2
+        y2_d.y = y2
 
         y1 = Individual(chromosomes=y1_d,
                         chrom_provider=mother.chrom_provider)
@@ -102,6 +107,9 @@ class Population(object):
 
         y1.mutate(mutations_params.mutate_chance)
         y2.mutate(mutations_params.mutate_chance)
+
+        y1.keep_in_range()
+        y2.keep_in_range()
         return y1, y2
 
 

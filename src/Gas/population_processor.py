@@ -40,7 +40,7 @@ class Population_processor(object):
         """
         pop = []
         for _ in range(0, popsize):
-            ind = Individual(random_chrom_provider= self.chromosomes_provider)
+            ind = Individual(chrom_provider= self.chromosomes_provider)
             pop.append(ind)
 
         return Population(pop, popsize,mutations_params)
