@@ -16,24 +16,34 @@ def simple_plot(x, y, label):
 def main():
 
     #popsize must be even
-    popsize = 100
+    popsize = 200
     maxgen = int(1000)
     chrom_provider = Chromosomes_providers()
-    chrom_provider.function_wrapper = MatyasFunctionProvider()
-    pop_processor = Population_processor(popsize,maxgen,chromosomes_provider=chrom_provider)
+    chrom_provider.function_wrapper = EasomFunctionProvider()
+    pop_processor = Population_processor(popsize,
+                                         maxgen,
+                                         retain_percentage=0.3,
+                                         mutate_chance= 0.1,
+                                         alpha_blend= 0.5,
+                                         SBX_n= 2,
+                                         chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
     worsts = {}
     bests = {}
+    best_inds = {}
     averages = {}
 
     for idx,population in generator:
         average = population.average()
-        best = population.best().fitness_value()
+        best_ind = population.best()
+        best = best_ind.fitness_value()
         worst = population.worst().fitness_value()
         worsts[idx] = float(worst)
         bests[idx] = best
         averages[idx] = average
-        del population
+        best_inds[idx] = best_ind
+        last_pop =  population
+       # del population
 
     # plot best of current population
     plt.subplot(211)
@@ -45,11 +55,19 @@ def main():
     simple_plot(averages.keys(), averages.values(),
                 label="average of population")
 
-    plt.figure()
+    # plt.figure()
     # plot worst of population
+    # plt.subplot(211)
+    # simple_plot(worsts.keys(), worsts.values(),
+    #             label="worst of current population")
+
+    plt.figure()
+   #last pop
+    #list(map(lambda x: x.fitness_value(), last_pop.individuals)
     plt.subplot(211)
-    simple_plot(worsts.keys(), worsts.values(),
-                label="worst of current population")
+    simple_plot(range(popsize),list(map(lambda x: x.fitness_value(), last_pop.individuals)),
+                label="last pop")
+
     #plt.ioff()
     plt.show()
     aaaa = bests.values()

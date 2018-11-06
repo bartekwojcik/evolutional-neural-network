@@ -6,7 +6,7 @@ import random
 
 class Population_processor(object):
     def __init__(self, popsize,max_gen, chromosomes_provider,
-                 retain_percentage=0.2, mutate_chance=0.02,
+                 retain_percentage=0.4, mutate_chance=0.1,
                  alpha_blend=0.5, SBX_n = 2):
         """Create an optimizer.
 
