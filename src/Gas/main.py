@@ -4,6 +4,7 @@ from src.Gas import file_helper
 from src.Gas.population_processor import Population_processor
 import matplotlib.pyplot as plt
 from src.Gas.chromosoms_provider import Chromosomes_providers
+from optproblems.cec2005 import *
 
 def simple_plot(x, y, label):
     plt.scatter(x, y, s=1,
@@ -12,17 +13,17 @@ def simple_plot(x, y, label):
                ncol=2, mode="expand", borderaxespad=0.)
 
 
-#todo preprocess data!!! use scalers, shuffle etc
 def main():
 
     #popsize must be even
     popsize = 200
-    maxgen = int(1000)
+    maxgen = int(500)
     chrom_provider = Chromosomes_providers()
-    chrom_provider.function_wrapper = EasomFunctionProvider()
+    function = F8(2)
+    chrom_provider.function_wrapper = FunctionProvider(function)
     pop_processor = Population_processor(popsize,
                                          maxgen,
-                                         retain_percentage=0.3,
+                                         retain_percentage=0.1,
                                          mutate_chance= 0.1,
                                          alpha_blend= 0.5,
                                          SBX_n= 2,
@@ -70,8 +71,8 @@ def main():
 
     #plt.ioff()
     plt.show()
-    aaaa = bests.values()
-    print(*aaaa)
+
+
 
 
 if __name__ == "__main__": main()

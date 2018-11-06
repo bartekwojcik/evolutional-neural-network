@@ -52,7 +52,6 @@ class Population(object):
         Breed a new population (do next generation)
         :param:
         retain_percentage: (float) percent of best parents going to next population
-
         :return:
         (Population): new population object
         """
