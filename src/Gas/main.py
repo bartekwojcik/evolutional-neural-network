@@ -13,13 +13,13 @@ def simple_plot(x, y, label):
                ncol=2, mode="expand", borderaxespad=0.)
 
 
-def main():
+def run_ga(function):
 
     #popsize must be even
     popsize = 200
     maxgen = int(500)
     chrom_provider = Chromosomes_providers()
-    function = F8(2)
+    # function = F8(2)
     chrom_provider.function_wrapper = FunctionProvider(function)
     pop_processor = Population_processor(popsize,
                                          maxgen,
@@ -46,33 +46,31 @@ def main():
         last_pop =  population
        # del population
 
-    # plot best of current population
-    plt.subplot(211)
-    simple_plot(bests.keys(), bests.values(),
-                label="best of current population")
+    return bests,averages,worsts,last_pop
 
-    # plot average of population
-    plt.subplot(212)
-    simple_plot(averages.keys(), averages.values(),
-                label="average of population")
+   #  # plot best of current population
+   #  plt.subplot(211)
+   #  simple_plot(bests.keys(), bests.values(),
+   #              label="best of current population")
+   #
+   #  # plot average of population
+   #  plt.subplot(212)
+   #  simple_plot(averages.keys(), averages.values(),
+   #              label="average of population")
+   #
+   #  # plt.figure()
+   #  # plot worst of population
+   #  # plt.subplot(211)
+   #  # simple_plot(worsts.keys(), worsts.values(),
+   #  #             label="worst of current population")
+   #
+   #  plt.figure()
+   # #last pop
+   #  #list(map(lambda x: x.fitness_value(), last_pop.individuals)
+   #  plt.subplot(211)
+   #  simple_plot(range(popsize),list(map(lambda x: x.fitness_value(), last_pop.individuals)),
+   #              label="last pop")
+   #
+   #  #plt.ioff()
+   #  plt.show()
 
-    # plt.figure()
-    # plot worst of population
-    # plt.subplot(211)
-    # simple_plot(worsts.keys(), worsts.values(),
-    #             label="worst of current population")
-
-    plt.figure()
-   #last pop
-    #list(map(lambda x: x.fitness_value(), last_pop.individuals)
-    plt.subplot(211)
-    simple_plot(range(popsize),list(map(lambda x: x.fitness_value(), last_pop.individuals)),
-                label="last pop")
-
-    #plt.ioff()
-    plt.show()
-
-
-
-
-if __name__ == "__main__": main()
