@@ -1,5 +1,5 @@
 from optproblems.cec2005 import *
-from src.Gas.main import run_ga
+from src.Gas.ga_runner import run_ga
 
 
 def main():
@@ -8,6 +8,7 @@ def main():
 
     for f in functions:
         ga_bests, ga_average, ga_worst, ga_last_pop = run_ga(f)
+        debug = 5
 
 
 
