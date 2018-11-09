@@ -14,7 +14,7 @@ def run_pso(function):
     gamma = 2
     sigma = 1
     global_best = None
-    position_global_best = []
+    global_best_position = []
     particles= []
     number_of_informants = int(popsize/20)
 
@@ -25,22 +25,40 @@ def run_pso(function):
 
     #add informants to each particle
     for p in particles:
-        informant_index = np.random.randint(0,popsize,size=number_of_informants)
-
+        informant_indices = np.random.randint(0,popsize,size=number_of_informants)
+        for inf_idx in informant_indices:
+            informant = particles[inf_idx]
+            if informant != p:
+                p.informants.append(informant)
     #iterate
     for iter in range(iterations):
         #evaluete fitness
         for p in particles:
             value = p.fitness_value()
 
-            if value > p.individual_best_fitness or p.individual_best_fitness is None:
+            #update best individual value
+            if p.individual_best_fitness is None or value > p.individual_best_fitness:
                 p.individual_best_fitness = value
-                p.individual_best_position = p.position
-            if value > global_best or global_best is None:
+                p.position_best_individual = p.position
+
+            #update global value
+            if global_best is None or value > global_best :
                 global_best = value
-                position_global_best = p.position
+                global_best_position = p.position
+
+            #update best informant
+            p_informants = p.informants
+
+            best_informant_dict =[(inf.fitness_value(), inf) for inf in p_informants]
+            best_dict_ordered = [key_value_pair for key_value_pair in
+                                sorted(best_informant_dict , key=lambda x: x[0], reverse=True)]
+            p.position_best_informants = best_dict_ordered[0][1].position
+
         #evaluate position
         for p in particles:
-            p.update_velocity(position_global_best, alpha)
+            p.update_velocity(global_best_position, alpha)
             p.update_position()
+    print(global_best)
+
+
 

@@ -15,8 +15,7 @@ class Particle():
         self.position_best_informants = []
         self.position_best_individual = []
         self.individual_best_fitness = None
-        self.individual_best_position = []
-        self.position = []
+        self.position = [0,0]
         self.beta = beta
         self.gamma = gamma
         self.sigma = sigma
@@ -41,7 +40,7 @@ class Particle():
             d = random.uniform(0, self.sigma)
 
             part_b = b * (self.position_best_individual[i] - self.position[i])
-            part_c = c *(self.position_best_informants[i] - self.position[i])
+            part_c = c * (self.position_best_informants[i] - self.position[i])
             part_d = d * (global_best_position[i] - self.position[i])
             self.velocity[i] = alpha*self.velocity[i] + part_b + part_c + part_d
 
