@@ -13,11 +13,8 @@ def simple_plot(x, y, label):
                ncol=2, mode="expand", borderaxespad=0.)
 
 
-def run_ga(function):
+def run_ga(function,popsize,maxgen):
 
-    #popsize must be even
-    popsize = 200
-    maxgen = int(500)
     chrom_provider = Chromosomes_providers()
     # function = F8(2)
     chrom_provider.function_wrapper = FunctionProvider(function)

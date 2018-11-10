@@ -3,16 +3,14 @@ from src.Pso.particle import Particle
 from src.math_functions import *
 import numpy as np
 
-def run_pso(function):
-    popsize = 200
-    iterations = 500
+def run_pso(function,popsize,iterations):
     function_provider = FunctionProvider(function)
     #https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4436220/
 
     alpha = 0.5
-    beta = 2.5
-    gamma = 2
-    sigma = 1
+    beta = 1.5
+    gamma = 1
+    sigma = 1.5
     global_best = None
     global_best_position = []
     particles= []
@@ -23,19 +21,23 @@ def run_pso(function):
         new_particle = Particle(function_provider,beta,gamma,sigma)
         particles.append(new_particle)
 
-    #add informants to each particle
+    #select informants to each particle
     for p in particles:
         informant_indices = np.random.randint(0,popsize,size=number_of_informants)
         for inf_idx in informant_indices:
             informant = particles[inf_idx]
             if informant != p:
                 p.informants.append(informant)
+
+    bests_per_iter = {}
+    average_per_iter = {}
     #iterate
     for iter in range(iterations):
         #evaluete fitness
+        this_iter_values = []
         for p in particles:
             value = p.fitness_value()
-
+            this_iter_values.append(value)
             #update best individual value
             if p.individual_best_fitness is None or value > p.individual_best_fitness:
                 p.individual_best_fitness = value
@@ -54,11 +56,19 @@ def run_pso(function):
                                 sorted(best_informant_dict , key=lambda x: x[0], reverse=True)]
             p.position_best_informants = best_dict_ordered[0][1].position
 
+        average_per_iter[iter] =  np.mean(this_iter_values)
+        bests_per_iter[iter] = np.max(this_iter_values)
+
+
         #evaluate position
         for p in particles:
             p.update_velocity(global_best_position, alpha)
             p.update_position()
+
+
     print(global_best)
+    print("coordinates: ", *global_best_position)
+    return average_per_iter, bests_per_iter
 
 
 
