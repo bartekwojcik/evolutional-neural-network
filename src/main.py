@@ -17,7 +17,7 @@ functions = [(F1(2), "F1"), (F3(2), "F3"), (F5(2), "F5"), (F8(2), "F8"), (F11(2)
 popsize = 100
 number_of_comparisons = 4
 number_of_functions = len(functions)
-number_of_iterations = 50
+number_of_iterations = 400
 
 
 trials_gas_best = []
