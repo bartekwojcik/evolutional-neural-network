@@ -8,8 +8,8 @@ def run_pso(function,popsize,iterations):
     #https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4436220/
 
     alpha = 0.5
-    beta = 1.5
-    gamma = 1
+    beta = 1
+    gamma = 1.5
     sigma = 1.5
     global_best = None
     global_best_position = []
