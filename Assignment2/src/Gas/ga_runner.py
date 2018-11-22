@@ -16,13 +16,12 @@ def simple_plot(x, y, label):
 def run_ga(function,popsize,maxgen):
 
     chrom_provider = Chromosomes_providers()
-    # function = F8(2)
     chrom_provider.function_wrapper = FunctionProvider(function)
     pop_processor = Population_processor(popsize,
                                          maxgen,
-                                         retain_percentage=0.05,
-                                         mutate_chance= 0.1,
-                                         alpha_blend= 0.9,
+                                         retain_percentage=0.4,
+                                         mutate_chance= 0.15,
+                                         alpha_blend= 0.5,
                                          chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
     worsts = {}

@@ -11,8 +11,6 @@ class Population_processor(object):
         """Create an optimizer.
 
         Args:
-            test_x (nparray): test values
-            test_y (nparray): test targets
             popsize (int): population size
             max_gen (int): maximum number of generations
             chromosomes_provider (Chromosoms_providers): Possible network paremters
