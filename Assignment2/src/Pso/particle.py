@@ -43,12 +43,15 @@ class Particle():
             part_c = c * (self.position_best_informants[i] - self.position[i])
             part_d = d * (global_best_position[i] - self.position[i])
             self.velocity[i] = alpha*self.velocity[i] + part_b + part_c + part_d
+            if part_b != 0:
+                debug =5
 
     def update_position(self):
         # function_boundries: tuple - (max_x,max_y),(min_x,min_y)
         bounds = self.function_provider.get_range()
         for i in range(self.dimensions):
-            self.position[i] = self.position[i] + self.velocity[i]
+            update = self.position[i] + 0.5 * self.velocity[i]
+            self.position[i] = update
             max = bounds[0][i]
             min = bounds[1][i]
 

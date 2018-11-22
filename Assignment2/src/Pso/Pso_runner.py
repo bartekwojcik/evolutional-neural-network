@@ -7,14 +7,15 @@ def run_pso(function,popsize,iterations):
     function_provider = FunctionProvider(function)
     #https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4436220/
 
-    alpha = 0.6
+    alpha = 0.5
     beta = 1
-    gamma = 1.5
-    sigma = 2
+    gamma = 1.25
+    sigma = 1.75
+
     global_best = None
     global_best_position = []
     particles= []
-    number_of_informants = int(popsize * 0.1)
+    number_of_informants = int(popsize * 0.1)+1
 
     #create new particles
     for _ in range(popsize):
@@ -22,14 +23,15 @@ def run_pso(function,popsize,iterations):
         particles.append(new_particle)
 
     #select informants to each particle
-    for p in particles:
+    for par in particles:
         informant_indices = np.random.randint((int)(popsize/2),popsize,size=number_of_informants)
         for inf_idx in informant_indices:
             informant = particles[inf_idx]
-            if informant != p:
-                p.informants.append(informant)
+            if informant != par:
+                par.informants.append(informant)
             else:
-                print("ERROR on informants: " + str(inf_idx))
+                informant = particles[0]
+                par.informants.append(informant)
 
 
     bests_per_iter = {}
@@ -38,18 +40,20 @@ def run_pso(function,popsize,iterations):
     for iter in range(iterations):
         #evaluete fitness
         this_iter_values = []
-        for p in particles:
+        for pid in range(len(particles)):
+            p = particles[pid]
             value = p.fitness_value()
             this_iter_values.append(value)
+
             #update best individual value
             if p.individual_best_fitness is None or value > p.individual_best_fitness:
                 p.individual_best_fitness = value
-                p.position_best_individual = p.position
+                p.position_best_individual = list(p.position)
 
             #update global value
             if global_best is None or value > global_best :
                 global_best = value
-                global_best_position = p.position
+                global_best_position = list(p.position)
 
             #update best informant
             p_informants = p.informants
@@ -67,6 +71,7 @@ def run_pso(function,popsize,iterations):
         for p in particles:
             p.update_velocity(global_best_position, alpha)
             p.update_position()
+            debug = 5
 
 
     print(global_best)

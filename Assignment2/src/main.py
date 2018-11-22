@@ -14,10 +14,10 @@ def combined_plot(ga, pso, description):
 
 functions = [(F10(2), "F10"), (F11(2), "F11"), (F12(2), "F12"), (F13(2), "F13"), (F14(2), "F14")]
 # should be even
-popsize = 200
+popsize = 40
 number_of_comparisons = 4
 number_of_functions = len(functions)
-number_of_iterations = 600
+number_of_iterations = 70
 
 
 trials_gas_best = []
@@ -54,10 +54,10 @@ for c in range(number_of_comparisons):
             average_pso_bests[f, i] += trials_pso_best[c, f][i]
             average_pso_average[f, i] += trials_pso_average[c, f][i]
 
-average_gas_bests  /= number_of_iterations
-average_gas_average /= number_of_iterations
-average_pso_bests /= number_of_iterations
-average_pso_average /= number_of_iterations
+average_gas_bests /= number_of_comparisons
+average_gas_average /= number_of_comparisons
+average_pso_bests /= number_of_comparisons
+average_pso_average /= number_of_comparisons
 
 debug = 5
 
