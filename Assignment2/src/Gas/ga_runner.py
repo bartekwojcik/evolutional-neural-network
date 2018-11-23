@@ -19,8 +19,8 @@ def run_ga(function,popsize,maxgen):
     chrom_provider.function_wrapper = FunctionProvider(function)
     pop_processor = Population_processor(popsize,
                                          maxgen,
-                                         retain_percentage=0.4,
-                                         mutate_chance= 0.15,
+                                         retain_percentage=0.3,
+                                         mutate_chance= 0.05,
                                          alpha_blend= 0.5,
                                          chromosomes_provider=chrom_provider)
     generator = pop_processor.start_evolution()
@@ -42,30 +42,3 @@ def run_ga(function,popsize,maxgen):
        # del population
 
     return bests,averages,worsts,last_pop
-
-   #  # plot best of current population
-   #  plt.subplot(211)
-   #  simple_plot(bests.keys(), bests.values(),
-   #              label="best of current population")
-   #
-   #  # plot average of population
-   #  plt.subplot(212)
-   #  simple_plot(averages.keys(), averages.values(),
-   #              label="average of population")
-   #
-   #  # plt.figure()
-   #  # plot worst of population
-   #  # plt.subplot(211)
-   #  # simple_plot(worsts.keys(), worsts.values(),
-   #  #             label="worst of current population")
-   #
-   #  plt.figure()
-   # #last pop
-   #  #list(map(lambda x: x.fitness_value(), last_pop.individuals)
-   #  plt.subplot(211)
-   #  simple_plot(range(popsize),list(map(lambda x: x.fitness_value(), last_pop.individuals)),
-   #              label="last pop")
-   #
-   #  #plt.ioff()
-   #  plt.show()
-

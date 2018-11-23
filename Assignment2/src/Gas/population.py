@@ -4,6 +4,9 @@ from src.Gas.mutators import *
 from src.utils import My_Dict
 import random
 
+
+
+
 class Population(object):
 
     def __init__(self, individuals, popsize, mutations_params):
@@ -36,16 +39,23 @@ class Population(object):
 
         :return: (list[Individuals]): list of offsprings
         """
+        std_x,std_y = self.get_standard_dev(mating_pool)
         random.shuffle(mating_pool)
         offspring_list = []
         for i in range(0, len(mating_pool), 2):
             one = mating_pool[i]
             two = mating_pool[i + 1]
-            off_one, off_two = self.crossover(one, two,self.mutations_params)
+            off_one, off_two = self.crossover(one, two,self.mutations_params,std_x,std_y)
 
             offspring_list.append(off_one)
             offspring_list.append(off_two)
         return offspring_list
+
+    def get_standard_dev(self,mating_pool):
+        xs = [ind.x for ind in mating_pool]
+        ys = [ind.y for ind in mating_pool]
+
+        return np.array(xs).std(),np.array(ys).std()
 
     def breed_new_population(self, retain_percentage):
         """len(best_ordered)
@@ -64,16 +74,17 @@ class Population(object):
         # Now find out how many spots we have left to fill.
         parents_length = len(parents)
         desired_length = self.popsize - parents_length
+
         density = self.get_pop_fitness_density()
         mating_pool = self.get_mating_pool(density,desired_length)
-        #right now parents and mating pool may overlap, if you implement diffrent mating pool function (the better one) you dont need retain and parents
+
         mating_pool += parents
 
         children = self.breed_mating_pool(mating_pool)
 
         return Population(children,self.popsize, self.mutations_params)
 
-    def crossover(self, mother, father, mutations_params):
+    def crossover(self, mother, father, mutations_params,std_x, std_y):
         """Make two children as parts of their parents.
 
         Args:
@@ -104,8 +115,8 @@ class Population(object):
         y2 = Individual(chromosomes=y2_d,
                         chrom_provider=mother.chrom_provider)
 
-        y1.mutate(mutations_params.mutate_chance)
-        y2.mutate(mutations_params.mutate_chance)
+        y1.mutate(mutations_params.mutate_chance,std_x, std_y)
+        y2.mutate(mutations_params.mutate_chance,std_x, std_y)
 
         y1.keep_in_range()
         y2.keep_in_range()

@@ -11,14 +11,13 @@ def combined_plot(ga, pso, description):
     plt.title(description)
     plt.savefig("final\\" + description+ ".jpg")
     plt.clf()
-
-functions = [(F10(2), "F10"), (F11(2), "F11"), (F12(2), "F12"), (F13(2), "F13"), (F14(2), "F14")]
+#[(F9(2), "F9"), (F15(2), "F15")]#, (F5(2), "F5"), (F10(2), "F10"), (F11(2), "F11")]
+functions = [(F9(2), "F9"), (F10(2), "F10"), (F11(2), "F11"), (F24(2), "F24"), (F5(2),"F5")]
 # should be even
-popsize = 40
+popsize = 70
 number_of_comparisons = 4
 number_of_functions = len(functions)
-number_of_iterations = 70
-
+number_of_iterations = 50
 
 trials_gas_best = []
 trials_gas_average = []

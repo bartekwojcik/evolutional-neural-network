@@ -23,7 +23,6 @@ class Individual(object):
             self.set_random_chromosomes()
 
     def fitness_value(self):
-        #i want negative value because later i am compering the highest value instea of the lowest
         return self.chrom_provider.function_wrapper.calc_funct(self.x,self.y)
 
     def relative_fitness(self, pop_fitness):
@@ -44,14 +43,14 @@ class Individual(object):
         self.y = random.uniform(min_y,max_y)
 
 
-    def mutate(self, mutate_chance):
+    def mutate(self, mutate_chance,std_x, std_y):
 
         x = random.random()
         if x <= mutate_chance:
-            self.x = normal_mutation(self.x)
+            self.x = normal_mutation(self.x,std_x)
         y = random.random()
         if y <= mutate_chance:
-            self.y = normal_mutation(self.y)
+            self.y = normal_mutation(self.y,std_y)
 
     def keep_in_range(self):
         min_x = self.range_array[1][0]
